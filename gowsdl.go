@@ -485,7 +485,9 @@ func normalize(value string) string {
 		}
 		return -1
 	}
-
+	if strings.HasPrefix(value, "-") {
+		value = strings.Replace(value, "-", "Minus", 1)
+	}
 	return strings.Map(mapping, value)
 }
 
