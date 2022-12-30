@@ -260,6 +260,39 @@ func TestEnumerationsGeneratedCorrectly(t *testing.T) {
 
 }
 
+func TestEnumerationWithMinusSignString(t *testing.T) {
+	g, err := NewGoWSDL("fixtures/test.wsdl", "myservice", false, true)
+	if err != nil {
+		t.Error(err)
+	}
+
+	resp, err := g.Start()
+	if err != nil {
+		t.Error(err)
+	}
+
+	actual, err := getTypeDeclaration(resp, "StatusCodeTypeMinus1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected := `const StatusCodeTypeMinus1 StatusCodeType = "-1"`
+
+	if actual != expected {
+		t.Error("got \n" + actual + " want \n" + expected)
+	}
+
+	actual, err = getTypeDeclaration(resp, "StatusCodeType1")
+	if err != nil {
+		t.Fatal(err)
+	}
+	expected = `const StatusCodeType1 StatusCodeType = "1"`
+
+	if actual != expected {
+		t.Error("got \n" + actual + " want \n" + expected)
+	}
+
+}
+
 func TestComplexTypeGeneratedCorrectly(t *testing.T) {
 	g, err := NewGoWSDL("fixtures/workday-time-min.wsdl", "myservice", false, true)
 	if err != nil {

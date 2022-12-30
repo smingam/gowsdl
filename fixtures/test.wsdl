@@ -91,6 +91,13 @@
           <s:documentation>The date and time when the process starts.</s:documentation>
         </s:annotation>
       </s:element>
+      <s:simpleType name="statusCodeType">
+        <s:restriction base="s:string">
+          <s:enumeration value="-1"/>
+          <s:enumeration value="0"/>
+          <s:enumeration value="1"/>
+        </s:restriction>
+    </s:simpleType>
     </s:schema>
   </wsdl:types>
   <wsdl:message name="GetInfoSoapIn">
