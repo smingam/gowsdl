@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	dateLayout = "2006-01-02Z07:00"
+	dateLayout = "2006-01-02-07:00"
 	timeLayout = "15:04:05.999999999Z07:00"
 )
 
