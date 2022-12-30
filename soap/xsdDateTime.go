@@ -5,6 +5,7 @@
 package soap
 
 import (
+	"encoding/json"
 	"encoding/xml"
 	"strings"
 	"time"
@@ -48,6 +49,11 @@ func (xdt XSDDateTime) MarshalXML(e *xml.Encoder, start xml.StartElement) error 
 		return e.EncodeElement(xdtString, start)
 	}
 	return nil
+}
+
+// MarshalJSON implements json.Marshal on XSDDateTime
+func (xdt *XSDDateTime) MarshalJSON() ([]byte, error) {
+	return xdt.ToGoTime().MarshalJSON()
 }
 
 // MarshalXMLAttr implements xml.MarshalerAttr on XSDDateTime
@@ -165,6 +171,14 @@ func (xd *XSDDate) ToGoTime() time.Time {
 		0, 0, 0, 0, time.Local)
 }
 
+// MarshalJSON implements json.Marshal on XSDDateTime
+func (xd *XSDDate) MarshalJSON() ([]byte, error) {
+	if !xd.innerDate.IsZero() {
+		return xd.innerDate.MarshalJSON()
+	}
+	return json.Marshal("")
+}
+
 // MarshalXML implementation on XSDDate
 func (xd XSDDate) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	xdtString := xd.string()
@@ -237,6 +251,11 @@ func CreateXsdDate(date time.Time, hasTz bool) XSDDate {
 type XSDTime struct {
 	innerTime time.Time
 	hasTz     bool
+}
+
+// MarshalJSON implements json.Marshal on XSDDateTime
+func (xt *XSDTime) MarshalJSON() ([]byte, error) {
+	return []byte(xt.string()), nil
 }
 
 // MarshalXML implements xml.Marshaler on XSDTime
